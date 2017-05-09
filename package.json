@@ -1,0 +1,28 @@
+{
+  "name": "react-native-cloudstorage",
+  "version": "0.0.1",
+  "author": "Vincent Quillien",
+  "private": false,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/placeholder"
+  },
+  "bugs": {
+    "url": "https://github.com/placeholder"
+  },
+  "homepage": "https://github.com/placeholder",
+  "keywords": [
+    "react-native",
+    "storage",
+    "cloud",
+    "library"
+  ],
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "peerDependencies": {
+    "react-native": ">=0.38.0"
+  }
+}
