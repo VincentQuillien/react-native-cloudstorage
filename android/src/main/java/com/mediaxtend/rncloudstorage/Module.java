@@ -1,7 +1,10 @@
 package com.mediaxtend.rncloudstorage;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -11,28 +14,39 @@ import java.util.Map;
 
 public class Module extends ReactContextBaseJavaModule {
 
-  private static final String DURATION_SHORT_KEY = "SHORT";
-  private static final String DURATION_LONG_KEY = "LONG";
+    public static final String PREFERENCES_KEY = "com.mediaxtend.rncloudstorage.PREFERENCE_KEY";
+    private SharedPreferences sharedPreferences;
 
-  public Module(ReactApplicationContext reactContext) {
-    super(reactContext);
-  }
 
-  @Override
-  public String getName() {
-    return "CloudStorage";
-  }
+    public Module(ReactApplicationContext reactContext) {
+        super(reactContext);
+        sharedPreferences = reactContext.getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
+    }
 
-  @Override
-  public Map<String, Object> getConstants() {
-    final Map<String, Object> constants = new HashMap<>();
-    constants.put(DURATION_SHORT_KEY, Toast.LENGTH_SHORT);
-    constants.put(DURATION_LONG_KEY, Toast.LENGTH_LONG);
-    return constants;
-  }
+    @Override
+    public String getName() {
+        return "CloudStorage";
+    }
 
-  @ReactMethod
-  public void show(String message, int duration) {
-    Toast.makeText(getReactApplicationContext(), message, duration).show();
-  }
+    @ReactMethod
+    public void show(String message, int duration) {
+        Toast.makeText(getReactApplicationContext(), message, duration).show();
+    }
+
+    @ReactMethod
+    public void getItem(String key, Promise promise) {
+        promise.resolve(sharedPreferences.getString(key, ""));
+    }
+
+    @ReactMethod
+    public void setItem(String key, String value, Promise promise) {
+        sharedPreferences.edit().putString(key, value).apply();
+        promise.resolve(null);
+    }
+
+    @ReactMethod
+    public void removeItem(String key, Promise promise) {
+        sharedPreferences.edit().remove(key).apply();
+        promise.resolve(null);
+    }
 }
